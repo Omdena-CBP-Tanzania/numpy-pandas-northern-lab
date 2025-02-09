@@ -31,7 +31,6 @@ def array_operations(arr):
     mean_value = np.mean(arr)
     std_dev = np.std(arr)
     max_value = np.max(arr)
-
     return mean_value, std_dev, max_value
 
 def read_csv_file(filepath):
@@ -60,8 +59,8 @@ def handle_missing_values(df):
             fill_values[column] = df[column].ffill()
         else:
             fill_values[column] = df[column].astype(float).mean()
-    df.fillna(fill_values, inplace=True)
 
+    df.fillna(fill_values, inplace=True)
     return df
 
 def select_data(df):
