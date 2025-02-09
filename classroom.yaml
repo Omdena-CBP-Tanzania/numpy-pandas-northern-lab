@@ -15,16 +15,21 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.8'  # Ensure Python is set up
+        python-version: '3.8'
 
     - name: Install dependencies
       run: |
-        pip install pytest pytest-reportlog  # Install pytest and logging plugin
+        pip install --upgrade pip
+        pip install pytest==7.4.0 pytest-json-report==1.5.0
+        pip list | grep pytest-json-report  # Debug package installation
+
+    - name: Debug pytest version
+      run: pytest --version  # Verify pytest version
 
     - name: Run tests
       id: test_assignment-py
-      run: pytest tests.py --report-log=report.json  # Use report log for test output
-      continue-on-error: true  # Ensures tests don't fail the workflow
+      run: pytest tests.py --json-report --json-report-file=report.json
+      continue-on-error: true
 
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
