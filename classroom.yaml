@@ -1,6 +1,6 @@
 name: Autograding Tests
 
-on: [push, pull_request]  # Run tests on push and PRs
+on: [push, pull_request]  # Runs on push and pull request events
 
 permissions:
   checks: write
@@ -11,20 +11,21 @@ jobs:
   run-autograding-tests:
     runs-on: ubuntu-latest
     if: github.actor != 'github-classroom[bot]'
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
+    - name: List repository contents
+      run: ls -R  # Debugging step to see available files
+
     - name: Install dependencies
-      run: pip install pytest  # ✅ Fix typo here
-    
+      run: pip install pytest  # Ensure pytest is installed
+
     - name: Run Pytest
-      run: pytest test_assignment.py  # ✅ Explicitly run tests
-    
+      run: pytest test_assignment.py || pytest ./test_assignment.py  # Run tests correctly
+
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        TEST_ASSIGNMENT-PY_RESULTS: "${{ steps.test_assignment-py.outputs.result }}"
-      with:
-        runners: test_assignment-py
+        TEST_ASSIGNMENT-…
