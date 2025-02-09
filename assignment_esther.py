@@ -7,8 +7,9 @@ def create_1d_array():
     Returns:
         numpy.ndarray: 1D array
     """
-    arr = np.array([1, 2, 3, 4, 5])
-    return arr
+    onedimarr = np.array([1,2,3,4,5])
+    return onedimarr
+
 
 def create_2d_array():
     """
@@ -31,7 +32,8 @@ def array_operations(arr):
     mean_value = np.mean(arr)
     std_dev = np.std(arr)
     max_value = np.max(arr)
-    return mean_value, std_dev, max_value
+    mytuple =(mean_value, std_dev, max_value)
+    return mytuple
 
 def read_csv_file(filepath):
     """
@@ -41,8 +43,9 @@ def read_csv_file(filepath):
     Returns:
         pandas.DataFrame: Loaded dataframe
     """
-    df = pd.read_csv(filepath)
-    return df
+    readfile = pd.read_csv('data/sample-data.csv')
+    fileToread = readfile.head()
+    return fileToread
 
 def handle_missing_values(df):
     """
@@ -52,16 +55,22 @@ def handle_missing_values(df):
     Returns:
         pandas.DataFrame: Cleaned dataframe
     """
-    print(df.isnull().sum())
-    fill_values = {}
-    for column in df.columns:
-        if df[column].dtype == "object":
-            fill_values[column] = df[column].ffill()
-        else:
-            fill_values[column] = df[column].astype(float).mean()
+    df = pd.read_csv("data/sample-data.csv")
 
-    df.fillna(fill_values, inplace=True)
+    df.isnull().sum()
+    for column in df.columns:
+        if df[column].dtype in ['int64', 'float64']: # check if column is numeric
+            df[column] = df[column].fillna(df[column].mean()) # fill missing values with mean
+
+        else: # non-numeric columns
+            df[column] = df[column].fillna(df[column].mode()[0]) # fill missing values with mode
+
     return df
+    #print(missing_values)
+    
+    #return missing_values
+
+#print(handle_missing_values("data/sample-data.csv"))
 
 def select_data(df):
     """
@@ -69,8 +78,9 @@ def select_data(df):
     Returns:
         pandas.DataFrame: Selected data
     """
-    selected_df_data = df.iloc[0:3,0:3]
-    return selected_df_data
+    df =pd.read_csv("data/sample-data.csv", usecols =['Name','Age','Salary'])
+    return df
+
 
 def rename_columns(df):
     """
@@ -78,14 +88,6 @@ def rename_columns(df):
     Returns:
         pandas.DataFrame: DataFrame with renamed columns
     """
-    column_mapping = {
-        "Name": "Full Name",
-        "Age": "Employee Age",
-        "Salary": "Annual Salary",
-        "Department": "Work Department",
-        "Experience": "Years of Experience",
-        "Education": "Education Level"
-    }
-    
-    df.rename(columns=column_mapping, inplace=True)
+    df= pd.read_csv("data/sample-data.csv")
+    df = pd.rename(column={'Name':'Full Name','Age':'Years','Salary':'Payments','Department':'WorkingArea','Experience':'WorkingYear','Education':'School'})
     return df
