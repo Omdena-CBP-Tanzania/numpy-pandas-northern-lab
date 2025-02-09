@@ -3,6 +3,7 @@ import pandas as pd
 import assignment
 import os
 import pytest
+import pytest-json-report
 
 
 def test_create_1d_array():
