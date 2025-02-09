@@ -1,29 +1,74 @@
 name: Autograding Tests
+
 'on': {}
+
 permissions:
   checks: write
   actions: read
   contents: read
+
 jobs:
   run-autograding-tests:
     runs-on: ubuntu-latest
     if: github.actor != 'github-classroom[bot]'
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: test_assignment.py
-      id: test_assignment-py
-      uses: classroom-resources/autograding-python-grader@v1
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
       with:
-        timeout: 10
-        max-score: 100
-        setup-command: pip install pytest pytest-json-report # Install pytest and the required plugin
-     - name: Run tests
-      id: test_assignment-py
-      run: pytest tests.py --json-report --json-report-file=./report.json # Use report log for test output
+        python-version: '3.8'  # Ensure compatibility
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install pytest==7.4.0 pytest-json-report==1.5.0
+
+    - name: Verify installation
+      run: |
+        pytest --version
+        pip list | grep pytest
+
+    - name: Run Pytest with JSON report
+      run: pytest test_assignment.py --json-report --json-report-file=report.json
+
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        TEST_ASSIGNMENT-PY_RESULTS: "${{steps.test_assignment-py.outputs.result}}"
+        TEST_ASSIGNMENT-PY_RESULTS: "${{steps.run-tests.outputs.result}}"
       with:
-        runners: test_assignment-py
+        runners: run-tests
+
+
+
+# name: Autograding Tests
+# 'on': {}
+# permissions:
+#   checks: write
+#   actions: read
+#   contents: read
+# jobs:
+#   run-autograding-tests:
+#     runs-on: ubuntu-latest
+#     if: github.actor != 'github-classroom[bot]'
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v4
+#     - name: test_assignment.py
+#       id: test_assignment-py
+#       uses: classroom-resources/autograding-python-grader@v1
+#       with:
+#         timeout: 10
+#         max-score: 100
+#         setup-command: pip install pytest pytest-json-report # Install pytest and the required plugin
+#      - name: Run tests
+#       id: test_assignment-py
+#       run: pytest tests.py --json-report --json-report-file=./report.json # Use report log for test output
+#     - name: Autograding Reporter
+#       uses: classroom-resources/autograding-grading-reporter@v1
+#       env:
+#         TEST_ASSIGNMENT-PY_RESULTS: "${{steps.test_assignment-py.outputs.result}}"
+#       with:
+#         runners: test_assignment-py
