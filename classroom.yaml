@@ -11,8 +11,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: tests.py
-      id: tests-py
+    - name: test_assignment.py
+      id: test_assignment-py
       uses: classroom-resources/autograding-python-grader@v1
       with:
         timeout: 10
@@ -21,6 +21,6 @@ jobs:
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        TESTS-PY_RESULTS: "${{steps.tests-py.outputs.result}}"
+        TEST_ASSIGNMENT-PY_RESULTS: "${{steps.test_assignment-py.outputs.result}}"
       with:
-        runners: tests-py
+        runners: test_assignment-py
