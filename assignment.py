@@ -42,7 +42,7 @@ def read_csv_file(filepath):
     Returns:
         pandas.DataFrame: Loaded dataframe
     """
-    df = pd.read_csv('sample-data.csv')
+    df = pd.read_csv(filepath)
     return df
 
 def handle_missing_values(df):
@@ -53,11 +53,14 @@ def handle_missing_values(df):
     Returns:
         pandas.DataFrame: Cleaned dataframe
     """
+    print(df.isnull().sum())
+    fill_values = {}
     for column in df.columns:
-        if df[column].dtype == "Object":
-            df[column].fillna(method="ffill", inplace=True)
+        if df[column].dtype == "object":
+            fill_values[column] = df[column].ffill()
         else:
-            df[column].fillna(df[column].mean(), inplace=True)
+            fill_values[column] = df[column].astype(float).mean()
+    df.fillna(fill_values, inplace=True)
 
     return df
 
