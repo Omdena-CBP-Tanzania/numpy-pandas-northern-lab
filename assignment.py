@@ -7,7 +7,8 @@ def create_1d_array():
     Returns:
         numpy.ndarray: 1D array
     """
-    pass
+    arr = np.array([1, 2, 3, 4, 5])
+    return arr
 
 def create_2d_array():
     """
@@ -27,7 +28,11 @@ def array_operations(arr):
     Returns:
         tuple: (mean, std_dev, max_value)
     """
-    pass
+    mean_value = np.mean(arr)
+    std_dev = np.std(arr)
+    max_value = np.max(arr)
+
+    return mean_value, std_dev, max_value
 
 def read_csv_file(filepath):
     """
@@ -37,7 +42,8 @@ def read_csv_file(filepath):
     Returns:
         pandas.DataFrame: Loaded dataframe
     """
-    pass
+    df = pd.read_csv(filepath)
+    return df
 
 def handle_missing_values(df):
     """
@@ -47,7 +53,16 @@ def handle_missing_values(df):
     Returns:
         pandas.DataFrame: Cleaned dataframe
     """
-    pass
+    print(df.isnull().sum())
+    fill_values = {}
+    for column in df.columns:
+        if df[column].dtype == "object":
+            fill_values[column] = df[column].ffill()
+        else:
+            fill_values[column] = df[column].astype(float).mean()
+    df.fillna(fill_values, inplace=True)
+
+    return df
 
 def select_data(df):
     """
@@ -55,7 +70,8 @@ def select_data(df):
     Returns:
         pandas.DataFrame: Selected data
     """
-    pass
+    selected_df_data = df.iloc[0:3,0:3]
+    return selected_df_data
 
 def rename_columns(df):
     """
@@ -63,4 +79,14 @@ def rename_columns(df):
     Returns:
         pandas.DataFrame: DataFrame with renamed columns
     """
-    pass
+    column_mapping = {
+        "Name": "Full Name",
+        "Age": "Employee Age",
+        "Salary": "Annual Salary",
+        "Department": "Work Department",
+        "Experience": "Years of Experience",
+        "Education": "Education Level"
+    }
+    
+    df.rename(columns=column_mapping, inplace=True)
+    return df
