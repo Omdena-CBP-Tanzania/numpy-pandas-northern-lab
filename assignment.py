@@ -82,7 +82,7 @@ def rename_columns(df):
         "Salary": "Annual Salary",
         "Department": "Work Department",
         "Experience": "Years of Experience",
-        "Education": "Education Level",
+        "Education": "Education Level"
     }
     
     df.rename(columns=column_mapping, inplace=True)
