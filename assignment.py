@@ -55,7 +55,8 @@ def select_data(df):
     Returns:
         pandas.DataFrame: Selected data
     """
-    pass
+    selected_df_data = df.iloc[0:3,0:3]
+    return selected_df_data
 
 def rename_columns(df):
     """
