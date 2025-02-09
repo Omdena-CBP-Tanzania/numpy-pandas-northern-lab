@@ -57,12 +57,20 @@ def handle_missing_values(df):
     """
     df = pd.read_csv("data/sample-data.csv")
 
-    missing_values = df.isnull().sum()
+    df.isnull().sum()
+    for column in df.columns:
+        if df[column].dtype in ['int64', 'float64']: # check if column is numeric
+            df[column] = df[column].fillna(df[column].mean()) # fill missing values with mean
+
+        else: # non-numeric columns
+            df[column] = df[column].fillna(df[column].mode()[0]) # fill missing values with mode
+
+    return df
     #print(missing_values)
     
-    return missing_values
+    #return missing_values
 
-print(handle_missing_values("data/sample-data.csv"))
+#print(handle_missing_values("data/sample-data.csv"))
 
 def select_data(df):
     """
