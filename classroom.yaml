@@ -2,44 +2,44 @@ name: Autograding Tests
 
 'on': {}
 
-# permissions:
-#   checks: write
-#   actions: read
-#   contents: read
+permissions:
+  checks: write
+  actions: read
+  contents: read
 
-# jobs:
-#   run-autograding-tests:
-#     runs-on: ubuntu-latest
-#     if: github.actor != 'github-classroom[bot]'
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
 
-#     steps:
-#     - name: Checkout code
-#       uses: actions/checkout@v4
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-#     - name: Set up Python
-#       uses: actions/setup-python@v4
-#       with:
-#         python-version: '3.8'  # Ensure compatibility
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'  # Ensure compatibility
 
-#     - name: Install dependencies
-#       run: |
-#         pip install --upgrade pip
-#         pip install numpy pandas pytest pytest-json-report
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install numpy pandas pytest pytest-json-report
 
-#     - name: Verify installation
-#       run: |
-#         pytest --version
-#         pip list | grep pytest
+    - name: Verify installation
+      run: |
+        pytest --version
+        pip list | grep pytest
 
-#     - name: Run Pytest with JSON report
-#       run: pytest test_assignment.py --json-report --json-report-file=report.json
+    - name: Run Pytest with JSON report
+      run: pytest test_assignment.py --json-report --json-report-file=report.json
 
-#     - name: Autograding Reporter
-#       uses: classroom-resources/autograding-grading-reporter@v1
-#       env:
-#         TEST_ASSIGNMENT-PY_RESULTS: "${{steps.run-tests.outputs.result}}"
-#       with:
-#         runners: run-tests
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TEST_ASSIGNMENT-PY_RESULTS: "${{steps.run-tests.outputs.result}}"
+      with:
+        runners: run-tests
 
 
 
