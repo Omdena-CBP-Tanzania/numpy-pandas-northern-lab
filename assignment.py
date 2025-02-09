@@ -59,7 +59,7 @@ def handle_missing_values(df):
             fill_values[column] = df[column].ffill()
         else:
             fill_values[column] = df[column].astype(float).mean()
-    
+
     df.fillna(fill_values, inplace=True)
     return df
 
