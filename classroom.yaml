@@ -17,7 +17,7 @@ jobs:
       with:
         timeout: 10
         max-score: 100
-        setup-command: pip install pytests, pytest-json-report
+        setup-command: pip install pytests
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
