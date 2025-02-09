@@ -33,4 +33,4 @@ jobs:
       env:
         TEST_ASSIGNMENT-PY_RESULTS: "${{ steps.test_assignment-py.outputs.result }}"
       with:
-        runners: test_assignment-py
+        runners: test_assignment.py
