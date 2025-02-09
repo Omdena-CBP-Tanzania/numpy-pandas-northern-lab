@@ -1,26 +1,30 @@
 name: Autograding Tests
-'on': {}
+
+on: [push, pull_request]  # Run tests on push and PRs
+
 permissions:
   checks: write
   actions: read
   contents: read
+
 jobs:
   run-autograding-tests:
     runs-on: ubuntu-latest
     if: github.actor != 'github-classroom[bot]'
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: test_assignment.py
-      id: test_assignment-py
-      uses: classroom-resources/autograding-python-grader@v1
-      with:
-        timeout: 10
-        max-score: 100
-        setup-command: pip install pytests
+      
+    - name: Install dependencies
+      run: pip install pytest  # ✅ Fix typo here
+    
+    - name: Run Pytest
+      run: pytest test_assignment.py  # ✅ Explicitly run tests
+    
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        TEST_ASSIGNMENT-PY_RESULTS: "${{steps.test_assignment-py.outputs.result}}"
+        TEST_ASSIGNMENT-PY_RESULTS: "${{ steps.test_assignment-py.outputs.result }}"
       with:
         runners: test_assignment-py
