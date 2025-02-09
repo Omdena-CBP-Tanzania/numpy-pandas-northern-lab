@@ -1,36 +1,26 @@
 name: Autograding Tests
-
-on: [push, pull_request]  # Run tests on push and pull requests
-
+'on': {}
 permissions:
   checks: write
   actions: read
   contents: read
-
 jobs:
   run-autograding-tests:
     runs-on: ubuntu-latest
     if: github.actor != 'github-classroom[bot]'
-
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4  # Ensures the repo files are available
-
-    - name: Debug - List Repository Files
-      run: ls -R  # Debugging step to check if test_assignment.py exists
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip  # Upgrade pip
-        pip install pytest  # Install pytest explicitly
-
-    - name: Run Pytest on test_assignment.py
-      run: pytest test_assignment.py  # Run the tests on test_assignment.py
-      continue-on-error: true  # Allow this to fail without stopping the workflow
-
+      uses: actions/checkout@v4
+    - name: test_assignment.py
+      id: test_assignment-py
+      uses: classroom-resources/autograding-python-grader@v1
+      with:
+        timeout: 10
+        max-score: 100
+        setup-command: pip install pytests
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        TEST_ASSIGNMENT-PY_RESULTS: "${{ steps.test_assignment-py.outputs.result }}"
+        TEST_ASSIGNMENT-PY_RESULTS: "${{steps.test_assignment-py.outputs.result}}"
       with:
         runners: test_assignment-py
